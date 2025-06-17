@@ -2,14 +2,37 @@
 llm:
   model: "meta-llama/llama-4-scout-17b-16e-instruct"
   temperature: 0.7
-  max_tokens: 150
+  max_tokens: 200
   provider: "groq"
+
+# AI/ML Specialization Configuration
+ai_ml_config:
+  enabled: true
+  llm_based_filtering: true
+  specialization_message: "I am an AI/ML specialized chatbot. I focus on topics related to artificial intelligence, machine learning, data science, and related technologies."
+
+# News Configuration
+news:
+  sources:
+    - "TechCrunch AI"
+    - "MIT Technology Review"
+    - "VentureBeat AI"
+    - "The Verge AI"
+    - "AI News"
+    - "Towards Data Science"
+    - "Machine Learning Mastery"
+  categories:
+    - "artificial-intelligence"
+    - "machine-learning"
+    - "technology"
+  max_articles: 5
+  freshness_hours: 24
 
 # Agent Configuration
 agent:
   max_iterations: 5
   max_execution_time: 30
-  verbose: true
+  verbose: false
 
 # Memory Configuration
 memory:
@@ -25,6 +48,15 @@ tools:
     enabled: true
   youtube:
     enabled: true
+  ai_ml_news:
+    enabled: true
+    max_articles: 5
+  arxiv_search:
+    enabled: true
+    max_results: 3
+  github_search:
+    enabled: true
+    focus: "ai-ml-repositories"
 
 # OpenAI Configuration
 openai_api_key: ""

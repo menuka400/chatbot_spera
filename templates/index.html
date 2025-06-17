@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linda Laga Sangamaya - AI Assistant</title>
+    <title>AI/ML News Chatbot - Your AI & ML Assistant</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -14,30 +14,48 @@
         <div class="chat-header">
             <div class="header-content">
                 <div class="logo-container">
-                    <i class="fas fa-robot robot-icon animate__animated animate__bounce animate__infinite"></i>
+                    <i class="fas fa-brain robot-icon animate__animated animate__bounce animate__infinite"></i>
                 </div>
                 <div class="title-container">
-                    <h1>ලිඳ ලඟ සංගමය</h1>
-                    <p>Your AI Assistant</p>
+                    <h1>🤖 AI/ML News Chatbot</h1>
+                    <p>Your specialized AI & Machine Learning assistant</p>
+                    <div class="specialization-tags">
+                        <span class="tag">AI News</span>
+                        <span class="tag">ML Research</span>
+                        <span class="tag">Tech Trends</span>
+                    </div>
                 </div>
             </div>
             <div class="wave-container">
                 <div class="wave"></div>
             </div>
         </div>
+        <div class="welcome-message">
+            <div class="welcome-content">
+                <h3>🚀 Welcome to AI/ML News Hub!</h3>
+                <p>I specialize in artificial intelligence, machine learning, and related technologies. Ask me about:</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-newspaper"></i> Latest AI/ML news and trends</li>
+                    <li><i class="fas fa-microscope"></i> Recent research papers from arXiv</li>
+                    <li><i class="fas fa-tools"></i> AI/ML tools and frameworks</li>
+                    <li><i class="fas fa-chart-line"></i> Industry developments and breakthroughs</li>
+                </ul>
+                <div class="sample-questions">
+                    <p><strong>Try asking:</strong></p>
+                    <div class="question-suggestions">
+                        <button class="suggestion-btn" onclick="fillInput('What are the latest AI news today?')">Latest AI news</button>
+                        <button class="suggestion-btn" onclick="fillInput('Tell me about recent machine learning research')">ML research</button>
+                        <button class="suggestion-btn" onclick="fillInput('What are the trending AI tools?')">AI tools</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="chat-messages" id="chat-messages">
             <!-- Messages will be added here dynamically -->
         </div>
-        <div class="file-upload-container">
-            <input type="file" id="file-upload" accept=".pdf,.txt,.docx,.md" style="display: none;">
-            <button id="upload-button" class="upload-button">
-                <i class="fas fa-file-upload"></i> Upload Document
-            </button>
-            <span id="upload-status"></span>
-        </div>
         <div class="chat-input-container">
             <div class="input-wrapper">
-                <input type="text" id="user-input" placeholder="Type your message here..." autocomplete="off">
+                <input type="text" id="user-input" placeholder="Ask me about AI, ML, or data science..." autocomplete="off">
             </div>
             <button id="send-button">
                 <i class="fas fa-paper-plane"></i>
@@ -46,4 +64,4 @@
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
-</html> 
+</html>
