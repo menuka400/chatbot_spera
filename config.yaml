@@ -1,0 +1,93 @@
+# LLM Configuration
+llm:
+  model: "meta-llama/llama-4-scout-17b-16e-instruct"
+  temperature: 0.7
+  max_tokens: 150
+  provider: "groq"
+
+# Agent Configuration
+agent:
+  max_iterations: 5
+  max_execution_time: 30
+  verbose: true
+
+# Memory Configuration
+memory:
+  max_history: 10
+
+# Tool Configuration
+tools:
+  web_search:
+    enabled: true
+    max_results: 3
+    search_depth: "advanced"
+  wikipedia:
+    enabled: true
+  youtube:
+    enabled: true
+
+# OpenAI Configuration
+openai_api_key: ""
+model_name: "gpt-3.5-turbo"
+temperature: 0.7
+max_tokens: 150
+
+# Memory Configuration
+memory_type: "buffer"
+
+# Patterns Configuration
+patterns:
+  name_introduction:
+    - "my name is"
+    - "my first name is"
+    - "i am"
+    - "i'm"
+    - "call me"
+  name_recall:
+    - "what is my name"
+    - "what's my name"
+    - "what was my name"
+    - "do you know my name"
+    - "can you tell me my name"
+    - "what name did i give"
+    - "what name that i give"
+    - "what is my first name"
+    - "what's my first name"
+  greetings:
+    - "hello"
+    - "hi"
+    - "hey"
+    - "greetings"
+    - "good morning"
+    - "good afternoon"
+    - "good evening"
+
+# Position Titles
+position_titles:
+  president: "President"
+  prime_minister: "Prime Minister"
+  mayor: "Mayor"
+  governor: "Governor"
+  ceo: "CEO"
+  chairman: "Chairman"
+  director: "Director"
+
+# Response Templates
+responses:
+  greeting: "Hello! How can I help you today?"
+  name_introduction: "Nice to meet you, {name}! How can I help you today?"
+  name_recall_success: "Your name is {name}!"
+  name_recall_failure: "I don't recall you telling me your name. Could you please introduce yourself?"
+  position_template: "The {position} of {location} is {name}."
+  error: "I apologize, but I encountered an error. Could you please rephrase your question?"
+
+memory:
+  type: "conversation_buffer"
+  max_token_limit: 2000
+
+tools:
+  web_search:
+    enabled: true
+    provider: "tavily"
+    search_depth: "advanced"
+    max_results: 3 
