@@ -3,6 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
 
+    // Create audio element for warning sound
+    const warningSound = new Audio('/sound/warning.mp3');
+    warningSound.volume = 0.5; // Set volume to 50%
+
     // Hide welcome message after first interaction
     let hasInteracted = false;
 
@@ -119,6 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Add bot response
             addMessage(data.response, false);
+
+            // Play warning sound if needed
+            if (data.play_warning) {
+                warningSound.play().catch(error => {
+                    console.error('Error playing warning sound:', error);
+                });
+            }
 
         } catch (error) {
             console.error('Error:', error);
