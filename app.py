@@ -44,10 +44,17 @@ def chat():
         
         user_message = request.json['message']
         response = ai_ml_chatbot.get_response(user_message)
-        return jsonify({'response': response})
+        return jsonify(response)
     except Exception as e:
         print(f"Error in chat endpoint: {e}")
-        return jsonify({'response': 'I encountered an error processing your query. Could you please try again?'}), 500
+        return jsonify({
+            'response': 'I encountered an error processing your query. Could you please try again?',
+            'play_warning': False
+        }), 500
+
+@app.route('/sound/<filename>')
+def serve_sound(filename):
+    return send_from_directory('Sound', filename)
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
