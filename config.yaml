@@ -4,6 +4,7 @@ llm:
   temperature: 0.7
   max_tokens: 200
   provider: "groq"
+  system_prompt: "You are an AI/ML specialized chatbot assistant. You have extensive knowledge about artificial intelligence, machine learning, data science, and related technologies. You provide accurate, helpful, and educational responses about AI/ML topics. You should focus on explaining concepts clearly and providing practical examples when appropriate."
 
 # AI/ML Specialization Configuration
 ai_ml_config:
@@ -30,7 +31,7 @@ news:
 
 # Agent Configuration
 agent:
-  max_iterations: 5
+  max_iterations: 100
   max_execution_time: 30
   verbose: false
 

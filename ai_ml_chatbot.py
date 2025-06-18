@@ -276,62 +276,84 @@ Question: {input}
 {agent_scratchpad}"""
             )
             
-            # Initialize the agent
-            self.agent = create_react_agent(
-                llm=self.llm,
+            # Create the agent executor
+            self.agent_executor = AgentExecutor.from_agent_and_tools(
+                agent=create_react_agent(self.llm, tools, prompt),
                 tools=tools,
-                prompt=prompt
-            )
-            
-            self.agent_executor = AgentExecutor(
-                agent=self.agent,
-                tools=tools,
-                verbose=True,  # Enable to see agent decision-making process
-                max_iterations=self.config.get('agent', {}).get('max_iterations', 5),
-                handle_parsing_errors=True,
-                return_intermediate_steps=False,
-                max_execution_time=self.config.get('agent', {}).get('max_execution_time', 30)
+                verbose=True,
+                max_iterations=100
             )
             
         except Exception as e:
             print(f"Error setting up agent: {e}")
             raise
     
-    def get_response(self, user_input: str) -> str:
-        """Get response from the AI/ML chatbot using LangChain's intelligent decision-making"""
+    def _is_ai_ml_related(self, query: str) -> bool:
+        """Check if the query is related to AI/ML topics"""
+        # List of AI/ML related keywords
+        ai_ml_keywords = [
+            'ai', 'artificial intelligence', 'machine learning', 'ml', 'deep learning',
+            'neural network', 'data science', 'algorithm', 'model', 'training',
+            'dataset', 'prediction', 'classification', 'clustering', 'regression',
+            'tensorflow', 'pytorch', 'keras', 'scikit-learn', 'computer vision',
+            'nlp', 'natural language processing', 'reinforcement learning',
+            'supervised learning', 'unsupervised learning', 'chatbot', 'openai',
+            'gpt', 'bert', 'transformer', 'cnn', 'rnn', 'lstm'
+        ]
+        
+        # Convert query to lowercase for case-insensitive matching
+        query_lower = query.lower()
+        
+        # Check if any AI/ML keyword is in the query
+        return any(keyword in query_lower for keyword in ai_ml_keywords)
+
+    def get_response(self, user_input: str) -> dict:
+        """Get response from the chatbot"""
         try:
-            # Update chat history
-            self.memory["chat_history"].append({"role": "user", "content": user_input})
+            # First check if the query is AI/ML related
+            is_ai_ml = self._is_ai_ml_related(user_input)
             
-            # Check for name introduction
-            lower_input = user_input.lower()
-            if "my name is" in lower_input or "i am" in lower_input or "i'm" in lower_input:
-                name = user_input.split("is" if "is" in lower_input else "am", 1)[1].strip()
-                self.memory["user_name"] = name
+            if not is_ai_ml:
+                return {
+                    "response": "I'm specialized in AI and ML topics only. Please ask questions related to artificial intelligence, machine learning, data science, or AI/ML research and trends.",
+                    "play_warning": True
+                }
             
-            # Format chat history for context
-            history = "\n".join([f"{msg['role']}: {msg['content']}" for msg in self.memory["chat_history"][-10:]])
-            
-            # Let LangChain agent decide whether to use tools or answer directly
-            response = self.agent_executor.invoke({
-                "input": user_input,
-                "history": history
-            })
-            
-            final_response = response["output"].strip()
-            
-            # Update chat history with response
-            self.memory["chat_history"].append({"role": "assistant", "content": final_response})
-            
-            # Maintain history size
-            if len(self.memory["chat_history"]) > 20:
-                self.memory["chat_history"] = self.memory["chat_history"][-20:]
-            
-            return final_response
+            try:
+                # Process AI/ML related query using the agent
+                response = self.agent_executor.invoke({
+                    "input": user_input,
+                    "history": "\n".join([f"{msg['role']}: {msg['content']}" for msg in self.memory["chat_history"][-10:]])
+                })
+                
+                # Update chat history
+                self.memory["chat_history"].append({"role": "user", "content": user_input})
+                self.memory["chat_history"].append({"role": "assistant", "content": response["output"]})
+                
+                # Maintain history size
+                if len(self.memory["chat_history"]) > 20:
+                    self.memory["chat_history"] = self.memory["chat_history"][-20:]
+                
+                return {
+                    "response": response["output"],
+                    "play_warning": False
+                }
+            except Exception as api_error:
+                error_msg = str(api_error).lower()
+                if "503" in error_msg or "service unavailable" in error_msg:
+                    return {
+                        "response": "I apologize, but the AI service is temporarily unavailable. This is a temporary issue and should be resolved shortly. Please try again in a few moments.",
+                        "play_warning": False
+                    }
+                else:
+                    raise api_error
             
         except Exception as e:
             print(f"Error getting response: {e}")
-            return "I encountered an error processing your query. Could you please try again?"
+            return {
+                "response": "I encountered an error processing your query. Could you please try again?",
+                "play_warning": False
+            }
 
 def main():
     """Main function to run the AI/ML chatbot"""
@@ -362,7 +384,7 @@ def main():
                 continue
             
             response = chatbot.get_response(user_input)
-            print(f"\nAI/ML Bot: {response}\n")
+            print(f"\nAI/ML Bot: {response['response']}\n")
     
     except KeyboardInterrupt:
         print("\n\nGoodbye! Stay updated with AI/ML developments! 🚀")
