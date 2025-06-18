@@ -8,7 +8,7 @@ import requests
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from pathlib import Path
-from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from langchain.schema import AIMessage, HumanMessage, SystemMessage
 from langchain_groq import ChatGroq
 from langchain.agents import Tool, AgentExecutor, create_react_agent
 from langchain.prompts import PromptTemplate
